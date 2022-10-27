@@ -1,6 +1,6 @@
 import React from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -10,6 +10,7 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { ButtonLoadMore } from "./Button/Button";
 import { Modal } from "./Modal/Modal";
 import { Loader } from "./Loader/Loader";
+import { EndCart } from "./End/End";
 
 
 export class App extends React.Component{
@@ -19,7 +20,7 @@ state ={
   page: 1,
   card: [],
   showModal: false,
-  statue: 'Ible'
+  status: 'Ible'
 }
 
 componentDidUpdate(prevProps, prevState){
@@ -30,23 +31,36 @@ componentDidUpdate(prevProps, prevState){
  const per_page = 12;
   if(prevState.searchName !== searchName || prevState.page !== page){
     this.setState({status: 'pending'})
-   setTimeout(() => {
+  
     fetch(`${URL}?q=${searchName}&page=${page}&per_page=${per_page}&key=${KEY}&image_type=photo&orientation=horizontal`)
    .then(r => r.json())
-   .then(card => this.setState(prevState => {return {card: [...prevState.card,
-    ...card.hits.map(({ id, webformatURL, largeImageURL }) => ({
-      id,
-      webformatURL,
-      largeImageURL,
-    })),
+   .then(card => {
+    if(card.hits.length === 0){
+      this.setState({
+       status: 'reject'
+      })
+      toast.error("Nothing found on request")
+      return;
+    }
+
+      this.setState(prevState => {return {card: [...prevState.card,
+        ...card.hits.map(({ id, webformatURL, largeImageURL }) => ({
+          id,
+          webformatURL,
+          largeImageURL,
+        })),
+        
+      ], status: "resolv"}}
     
-  ], status: "resolv"}})).catch(eror => eror)
-   }, 3000);
+      )
+    }
+ 
+  ).catch(err => err)
   }
 }
 
 handleIncrementPage = () => {
-  this.setState(prevState => { return {page: prevState.page + 1} } )
+  this.setState(prevState => {return {page: prevState.page + 1} } )
 
 }
 
@@ -71,12 +85,12 @@ imgWindowModal = imgUrl => {
     const { showModal, card, imgUrl, status } = this.state;
     return (
 
-      <div>
+      <div style={{padding:  20, textAlign: "center"}}>
         <Searchbar onSubmit={this.handleFormSubmit}/>
         {(status === 'resolv' || status === 'pending' )&& <ImageGallery images={card} onClick={this.imgWindowModal}/>}
 
-        {(card.length > 0 && status === 'resolv') && <ButtonLoadMore onClick={this.handleIncrementPage}/>}
-      
+        {(card.length > 0 && status === 'resolv' && card.length % 12  === 0) && <ButtonLoadMore onClick={this.handleIncrementPage}/>}
+        {card.length % 12 !== 0 && <EndCart/> }
         {status === 'pending' && <Loader/>}
         {showModal && (
           <Modal onClose={this.toggleModal}>

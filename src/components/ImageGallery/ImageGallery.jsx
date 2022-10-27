@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types'; 
+
 import { ImageGallerys } from "./ImageGallery.styled";
 import {ImageGalleryItems  } from "../ImageGalleryItems/ImageGalleryItems";
-
-// id, webformatURL ,largeImageURL 
 
 
 export const ImageGallery = ({images, onClick}) => (
@@ -17,3 +17,9 @@ export const ImageGallery = ({images, onClick}) => (
         );})}
 </ImageGallerys>
 ) 
+
+
+ImageGallery.propTypes = {
+  images: PropTypes.array.isRequired, 
+  onClick: PropTypes.func.isRequired,
+}

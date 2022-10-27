@@ -1,4 +1,5 @@
 import { OverlayDiv, ModalDiv } from "./Modal.styled";
+import PropTypes from 'prop-types';
 import React from "react";
 import { createPortal } from 'react-dom';
 
@@ -36,4 +37,9 @@ handleOverlayClick = ({ currentTarget, target }) => {
     </OverlayDiv>, modalRoot
         )
     }
+}
+
+Modal.propTypes ={
+  children: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
 }
