@@ -16,11 +16,11 @@ export class App extends React.Component {
     card: [],
     showModal: false,
     status: 'Ible',
+    imgUrl: '',
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     const { page, searchName } = this.state;
-
     const URL = 'https://pixabay.com/api/';
     const KEY = '29990165-8c350ed327b5f0dec080b7ac6';
     const per_page = 12;
@@ -83,7 +83,7 @@ export class App extends React.Component {
   render() {
     const { showModal, card, imgUrl, status } = this.state;
     return (
-      <div style={{ padding: 20, textAlign: 'center' }}>
+      <div style={{ textAlign: 'center' }}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {(status === 'resolv' || status === 'pending') && (
           <ImageGallery images={card} onClick={this.imgWindowModal} />
