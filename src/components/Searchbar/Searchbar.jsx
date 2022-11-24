@@ -7,6 +7,7 @@ import {
   SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled';
+import PropTypes from 'prop-types';
 
 import { FcSearch } from 'react-icons/fc';
 
@@ -53,3 +54,5 @@ export class Searchbar extends React.Component {
     );
   }
 }
+
+Searchbar.propTypes = { onSubmit: PropTypes.func.isRequired };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchApi } from '../API/API';
 
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ButtonLoadMore } from './Button/Button';
@@ -21,16 +22,11 @@ export class App extends React.Component {
 
   componentDidUpdate(_, prevState) {
     const { page, searchName } = this.state;
-    const URL = 'https://pixabay.com/api/';
-    const KEY = '29990165-8c350ed327b5f0dec080b7ac6';
-    const per_page = 12;
+
     if (prevState.searchName !== searchName || prevState.page !== page) {
       this.setState({ status: 'pending' });
 
-      fetch(
-        `${URL}?q=${searchName}&page=${page}&per_page=${per_page}&key=${KEY}&image_type=photo&orientation=horizontal`
-      )
-        .then(r => r.json())
+      fetchApi(searchName, page)
         .then(card => {
           if (card.hits.length === 0) {
             this.setState({
