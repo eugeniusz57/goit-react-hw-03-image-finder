@@ -6,6 +6,10 @@ import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends React.Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -35,8 +39,3 @@ export class Modal extends React.Component {
     );
   }
 }
-
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClose: PropTypes.func.isRequired,
-};

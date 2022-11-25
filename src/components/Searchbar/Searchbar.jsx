@@ -12,6 +12,10 @@ import PropTypes from 'prop-types';
 import { FcSearch } from 'react-icons/fc';
 
 export class Searchbar extends React.Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   state = {
     searchName: '',
   };
@@ -54,5 +58,3 @@ export class Searchbar extends React.Component {
     );
   }
 }
-
-Searchbar.propTypes = { onSubmit: PropTypes.func.isRequired };
